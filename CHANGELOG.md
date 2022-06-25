@@ -1,24 +1,10 @@
 # CHANGELOG
 
-## [v0.3.0](https://github.com/indigo-tangerine/itc-tfm-project-template/releases/tag/v0.3.0) - 2022-05-06 19:28:25
+## [v0.2.0](https://github.com/indigo-tangerine/itc-dkr-mvdb/releases/tag/v0.2.0) - 2022-06-25 21:04:20
 
 *No description*
 
-### Bug Fixes
-
-- general:
-  - update variables ([a450049](https://github.com/indigo-tangerine/itc-tfm-project-template/commit/a450049cfdafda3c756b1d4e5abd250b8badda41))
-
-## [v0.2.0](https://github.com/indigo-tangerine/itc-tfm-project-template/releases/tag/v0.2.0) - 2022-05-05 19:54:14
-
-*No description*
-
-### Feature
-
-- general:
-  - update workflows ([d5bd7a6](https://github.com/indigo-tangerine/itc-tfm-project-template/commit/d5bd7a6496a095c2632fe4d55197d69584465372)) ([#1](https://github.com/indigo-tangerine/itc-tfm-project-template/pull/1))
-
-## [v0.1.0](https://github.com/indigo-tangerine/itc-tfm-project-template/releases/tag/v0.1.0) - 2022-05-04 19:19:59
+## [v0.1.0](https://github.com/indigo-tangerine/itc-dkr-mvdb/releases/tag/v0.1.0) - 2022-06-25 21:03:55
 
 *No description*
 

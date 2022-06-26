@@ -1,0 +1,52 @@
+name: Deploy to ECR
+
+on: [push]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: "eu-west-1"
+  ECR_REPOSITORY: "mvdb"
+
+jobs:
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+            latest=true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.CICD_AUTOMATION_GITHUB_ACTIONS_ROLE }}
+          role-session-name: GithubActions
+          mask-aws-account-id: "yes"
+          role-duration-seconds: 600
+          role-skip-session-tagging: true
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: nodejs_demo_image
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.meta.outputs.tags }} .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.meta.outputs.tags }}

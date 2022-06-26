@@ -11,7 +11,7 @@ on:
     outputs:
       tag:
         description: Release tag
-        value: ${{ jobs.tag-releases.outputs.tag }}
+        value: ${{ jobs.tag-release.outputs.tag }}
 
 jobs:
   tag-release:

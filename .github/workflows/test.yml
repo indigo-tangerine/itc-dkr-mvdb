@@ -12,25 +12,20 @@ env:
 
 jobs:
   # CALL WORKFLOW tag-release
-  # tag-release:
-  # uses: indigo-tangerine/shared-workflows/.github/workflows/tag-release.yml@main
-  # uses: ./.github/workflows/tag-release.yml
+  tag-release:
+    # uses: indigo-tangerine/shared-workflows/.github/workflows/tag-release.yml@main
+    uses: ./.github/workflows/tag-release.yml
 
   build-image:
     name: Build Image
     runs-on: ubuntu-latest
+    needs: [tag-release]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Bump version and push tag
-        id: bump_tag
-        uses: anothrNick/github-tag-action@1.36.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: ${{ inputs.use_v_prefix }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -48,7 +43,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ steps.bump_tag.outputs.tag }}
+          IMAGE_TAG: ${{ needs.tag-release.outputs.tag }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

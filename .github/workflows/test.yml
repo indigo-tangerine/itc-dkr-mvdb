@@ -13,7 +13,8 @@ env:
 jobs:
   # CALL WORKFLOW tag-release
   tag-release:
-    uses: ./tag-release.yml
+    # uses: indigo-tangerine/shared-workflows/.github/workflows/tag-release.yml@main
+    uses: ./.github/workflows/tag-release.yml
 
   build-image:
     name: Build Image

@@ -4,7 +4,7 @@ on: [push]
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 env:
   AWS_REGION: "eu-west-1"

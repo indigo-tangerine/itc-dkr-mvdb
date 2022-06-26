@@ -5,8 +5,7 @@ ENV APP_DIR=/mvdb
 WORKDIR $APP_DIR
 
 RUN apt update \
-  && apt install -y jq curl \
-  && apt install sqlite3=3.27.2-3
+  && apt install -y jq curl 
 
 # Install requirements
 COPY requirements.txt ./

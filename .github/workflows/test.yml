@@ -31,7 +31,7 @@ jobs:
           role-to-assume: ${{ secrets.CICD_AUTOMATION_GITHUB_ACTIONS_ROLE }}
           role-session-name: GithubActions
           mask-aws-account-id: "yes"
-          role-duration-seconds: 600
+          role-duration-seconds: 1200
           role-skip-session-tagging: true
 
       - name: Login to Amazon ECR

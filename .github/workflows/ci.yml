@@ -1,0 +1,50 @@
+name: continous integration
+
+on:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  AWS_REGION: "eu-west-1"
+  ECR_REPOSITORY: "mvdb"
+
+jobs:
+  # CALL WORKFLOW tag-only
+  tag-only:
+    uses: indigo-tangerine/shared-workflows/.github/workflows/tag-only.yml@main
+
+  build-image:
+    name: Build Image
+    runs-on: ubuntu-latest
+    needs: [tag-only]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.CICD_AUTOMATION_GITHUB_ACTIONS_ROLE }}
+          role-session-name: GithubActions
+          mask-aws-account-id: "yes"
+          role-duration-seconds: 1200
+          role-skip-session-tagging: true
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ needs.tag-only.outputs.tag }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

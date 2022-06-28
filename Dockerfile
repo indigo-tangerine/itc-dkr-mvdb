@@ -5,7 +5,7 @@ ENV APP_DIR=/mvdb
 WORKDIR $APP_DIR
 
 RUN apt update \
-  && apt install -y jq curl
+  && apt install -y jq curl 
 
 # Install requirements
 COPY requirements.txt ./
@@ -14,5 +14,7 @@ RUN python3 -m pip install --upgrade pip \
 
 # Copy api code
 COPY ./src $APP_DIR/
+
+EXPOSE 5000
 
 CMD ["python3", "server.py"]

@@ -10,7 +10,7 @@ permissions:
 
 env:
   AWS_REGION: "eu-west-1"
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
+  ECR_REPOSITORY: "mvdb"
 
 jobs:
   # CALL WORKFLOW tag-only

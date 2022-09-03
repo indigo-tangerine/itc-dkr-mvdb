@@ -1,6 +1,6 @@
-Flask
-boto3
-botocore
-requests
-aws-xray-sdk
-flask-swagger-ui
+Flask==2.2.2
+boto3==1.24.12
+botocore==1.27.12
+requests==2.28.0
+aws-xray-sdk==2.10.0
+flask-swagger-ui==4.11.1

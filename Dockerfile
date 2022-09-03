@@ -1,16 +1,16 @@
 FROM python:3.9-slim
-LABEL Author="Rupert Broad - ITC"
+LABEL Author="Rupert Broad ITC"
 
 ENV APP_DIR=/mvdb
 WORKDIR $APP_DIR
 
-RUN apt update \
-  && apt install -y jq curl 
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends jq curl 
 
 # Install requirements
 COPY requirements.txt ./
-RUN python3 -m pip install --upgrade pip \
-  && python3 -m pip install -r requirements.txt 
+RUN python3 -m pip install --no-cache-dir --upgrade pip \
+  && python3 -m pip install -r requirements.txt --no-cache-dir
 
 # Copy api code
 COPY ./src $APP_DIR/
